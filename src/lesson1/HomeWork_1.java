@@ -1,5 +1,7 @@
 package lesson1;
 
+import java.beans.PropertyEditorSupport;
+import java.util.Arrays;
 import java.util.Locale;
 
 public class HomeWork_1 {
@@ -10,7 +12,12 @@ public class HomeWork_1 {
         task2();
         System.out.println("---------N3--------");
         task3();
-
+        System.out.println("---------PRO N1--------");
+        proTask1();
+        System.out.println("---------PRO N2--------");
+        proTask2();
+        System.out.println("---------PRO N3--------");
+        proTask3();
         System.out.println("---------PRO N4--------");
         proTask4();
     }
@@ -55,7 +62,46 @@ public class HomeWork_1 {
         stringFromArray = String.valueOf(lettersArray);
         System.out.println(stringFromArray);
     }
+    public static void proTask1() {
+        //Задача №1
+        //Произвести преобразование "234" в число типа int и прибавить к этому числу длину строки "some_text"
+        String number = "234";
+        String text = "some_text";
+        int result = Integer.parseInt(number) + text.length();
+        System.out.println(result);
+    }
+    public static void proTask2() {
+        //Задача №2
+        //Посчитать (a+b)^2 = ?, при a=3, b=5
+        int a = 3;
+        int b = 5;
+        System.out.println(Math.pow(a+b,2));
+    }
+    public static void proTask3() {
+        //Задача №3
+        //Создать два массив чисел:
+        // 1,2,5,7,10
+        // 2,3,2,17,15
+        // Создать массив чисел, в котором будут: все числа из этих двух массивов,
+        // и результат умножения чисел с одинаковым порядковым номером
+        //
+        //Ожидаемый результат:
+        //1,2,5,7,10,2,3,2,17,15,2,6,10,119,150
+        //(первый массив - 1,2,5,7,10), (второй массив - 2,3,2,17,15),
+        //(результат перемножения - (1*2), (2*3), (5*2), (7*17), (10*15)
+        int[] firstArray = new int[]{1, 2, 5, 7, 10};
+        int[] secondArray = new int[]{2, 3, 2, 17, 15};
+        int[] multiplicationArray = new int[firstArray.length];
+        int[] finalArray = new int[firstArray.length * 3];
 
+        for (int i = 0; i < multiplicationArray.length; i++) {
+            multiplicationArray[i] = firstArray[i] * secondArray[i];
+        }
+        System.arraycopy(firstArray,0,finalArray,0,firstArray.length);
+        System.arraycopy(secondArray,0,finalArray,firstArray.length,secondArray.length);
+        System.arraycopy(multiplicationArray,0,finalArray,firstArray.length+secondArray.length,multiplicationArray.length);
+        System.out.println(Arrays.toString(finalArray));
+    }
     public static void proTask4() {
         //Задача №4
         //В слове "Hello world!" заменить все l на r, сделать все буквы заглавными, выбрать первые 8 символов
