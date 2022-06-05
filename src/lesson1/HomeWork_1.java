@@ -1,8 +1,7 @@
 package lesson1;
 
-import java.beans.PropertyEditorSupport;
 import java.util.Arrays;
-import java.util.Locale;
+import java.util.Scanner;
 
 public class HomeWork_1 {
     public static void main(String[] args) {
@@ -20,6 +19,9 @@ public class HomeWork_1 {
         proTask3();
         System.out.println("---------PRO N4--------");
         proTask4();
+        System.out.println("---------Expert N1--------");
+        ExpertTask1();
+
     }
     public static void task1() {
         //Задача №1
@@ -107,5 +109,58 @@ public class HomeWork_1 {
         //В слове "Hello world!" заменить все l на r, сделать все буквы заглавными, выбрать первые 8 символов
         String word = "Hello world!";
         System.out.println(word.substring(0,7).replace('l','r').toUpperCase());
+    }
+
+    public static void ExpertTask1() {
+        //Экспертный уровень
+        //Задача №1
+        //Создать метод маскирования персональных данных, который:
+        //Телефон (до/после маскирования): 79991113344 / 7999***3344
+        //Email (до/после маскирования): test@yandex.ru / tes*@******.ru, my_mail@gmail.com / my_mai*@*****.com
+        //Фио (до/после маскирования): Иванов Иван Иванович / И****в Иван И.
+        //
+        //Входящие параметры: String text
+        //Возвращаемый результат: String
+        //
+        //Примеры возможного текста:
+        //<client>(Какие то данные)<data>79991113344;test@yandex.ru;Иванов Иван Иванович</data></client> - "<client>(Какие то данные)<data>7999***3344;tes*@******.ru;И****в Иван И.</data></client>"
+        //<client>(Какие то данные)<data></data></client> - вернет тоже (никаких ошибок)
+        //<client>(Какие то данные)<data>Иванов Иван Иванович;79991113344</data></client> - "<client>(Какие то данные)<data>И****в Иван И.;7999***3344</data></client>"
+
+        //Используемые технологии: String.find, String.replaceAll, String.split, String.join, String.contains, String.substring
+        //Регулярные выражения, класс StringBuilder
+        String mask = "*";
+        System.out.println("Введите ваши данные");
+        //Scanner scanner = new Scanner(System.in);
+        //String inputText = scanner.nextLine();
+        String inputText = "<client>(Какие то данные)<data>79991113344;test@yandex.ru;Иванов Иван Иванович</data></client>";
+        //scanner.close();
+        // вытаскиваем данные из тега дата
+        String dataString = inputText.substring(inputText.indexOf("<data>")+6,inputText.indexOf("</data>"));
+        if (dataString.isEmpty())  {
+            System.out.println(inputText);
+            return;
+        }
+        String[] userData = dataString.split(";");
+        StringBuilder temporaryString = new StringBuilder();
+        for (int i = 0; i < userData.length; i++) {
+
+            if (userData[i].contains("@")) { // значит электронка
+                temporaryString = temporaryString.append(userData[i]);
+                userData[i] = temporaryString.replace(userData[i].indexOf("@")-2,userData[i].indexOf("@")-1,mask).toString();
+                //userData[i] = userData[i].substring(0,userData[i].indexOf('@'));
+                //userData[i] = userData[i].
+            }
+            if (userData[i].matches("[0-9]+")) { // значит телефон
+                //System.out.println(userData[i].length());
+                temporaryString = temporaryString.append(userData[i]);
+                userData[i] = temporaryString.replace(4, userData[i].length() -4, mask.repeat(userData[i].length()-8)).toString();
+                //userData[i] = temporaryString.toString();
+                System.out.println(userData[i]);
+            }
+        }
+        System.out.println(inputText);
+        System.out.println(dataString);
+
     }
 }
