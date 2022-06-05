@@ -143,11 +143,13 @@ public class HomeWork_1 {
         }
         String[] userData = dataString.split(";");
         StringBuilder temporaryString = new StringBuilder();
+        String resultString = "";
         for (int i = 0; i < userData.length; i++) {
 
             if (userData[i].contains("@")) { // значит электронка
                 temporaryString = temporaryString.append(userData[i]);
                 userData[i] = temporaryString.replace(userData[i].indexOf("@")-2,userData[i].indexOf("@")-1,mask).toString();
+                userData[i] = temporaryString.replace(userData[i].indexOf("@")+1,userData[i].indexOf(".")-1,mask).toString();
                 //userData[i] = userData[i].substring(0,userData[i].indexOf('@'));
                 //userData[i] = userData[i].
             }
@@ -158,9 +160,11 @@ public class HomeWork_1 {
                 //userData[i] = temporaryString.toString();
                 System.out.println(userData[i]);
             }
+            resultString += userData[i]+"  ";
         }
         System.out.println(inputText);
         System.out.println(dataString);
+        System.out.println(resultString);
 
     }
 }
