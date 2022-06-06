@@ -130,41 +130,47 @@ public class HomeWork_1 {
         //Используемые технологии: String.find, String.replaceAll, String.split, String.join, String.contains, String.substring
         //Регулярные выражения, класс StringBuilder
         String mask = "*";
+        String resultString = "";
         System.out.println("Введите ваши данные");
         //Scanner scanner = new Scanner(System.in);
         //String inputText = scanner.nextLine();
-        String inputText = "<client>(Какие то данные)<data>79991113344;test@yandex.ru;Иванов Иван Иванович</data></client>";
+        //String inputText = "<client>(Какие то данные)<data>79991113344;test@yandex.ru;Иванов Иван Иванович</data></client>";
+        //String inputText = "<client>(Какие то данные)<data></data></client>";
+        String inputText = "<client>(Какие то данные)<data>Иванов Иван Иванович;79991113344</data></client>";
         //scanner.close();
+
         // вытаскиваем данные из тега дата
         String dataString = inputText.substring(inputText.indexOf("<data>")+6,inputText.indexOf("</data>"));
         if (dataString.isEmpty())  {
             System.out.println(inputText);
             return;
         }
+        // парсим тег на данные
         String[] userData = dataString.split(";");
-        StringBuilder temporaryString = new StringBuilder();
-        String resultString = "";
+
         for (int i = 0; i < userData.length; i++) {
+            StringBuilder temporaryString = new StringBuilder();
+            temporaryString = temporaryString.append(userData[i]);
 
             if (userData[i].contains("@")) { // значит электронка
-                temporaryString = temporaryString.append(userData[i]);
-                userData[i] = temporaryString.replace(userData[i].indexOf("@")-2,userData[i].indexOf("@")-1,mask).toString();
-                userData[i] = temporaryString.replace(userData[i].indexOf("@")+1,userData[i].indexOf(".")-1,mask).toString();
-                //userData[i] = userData[i].substring(0,userData[i].indexOf('@'));
-                //userData[i] = userData[i].
+                userData[i] = temporaryString.replace(userData[i].indexOf("@")-1,userData[i].indexOf("@"),mask).toString();
+                userData[i] = temporaryString.replace(userData[i].indexOf("@")+1,userData[i].indexOf("."),mask.repeat(userData[i].indexOf(".")-userData[i].indexOf("@")-1)).toString();
             }
             if (userData[i].matches("[0-9]+")) { // значит телефон
-                //System.out.println(userData[i].length());
-                temporaryString = temporaryString.append(userData[i]);
-                userData[i] = temporaryString.replace(4, userData[i].length() -4, mask.repeat(userData[i].length()-8)).toString();
-                //userData[i] = temporaryString.toString();
-                System.out.println(userData[i]);
+               userData[i] = temporaryString.replace(4, userData[i].length() -4, mask.repeat(userData[i].length()-8)).toString();
             }
-            resultString += userData[i]+"  ";
+            if (userData[i].matches("[А-Яа-я ]+")) { //значит фио
+                String[] fioArray = userData[i].split(" ");
+                temporaryString = new StringBuilder(fioArray[0]);
+                    fioArray[0] = temporaryString.replace(1,fioArray[0].length()-1,mask.repeat(fioArray[0].length()-2)).toString();
+                    fioArray[2] = temporaryString.replace(1,fioArray[2].length(), ".").toString();
+                    userData[i] = fioArray[0]+' '+fioArray[1]+' '+fioArray[2];
+            }
+            resultString += userData[i]+";";
         }
         System.out.println(inputText);
-        System.out.println(dataString);
-        System.out.println(resultString);
+        StringBuilder finalString = new StringBuilder().append(inputText).replace(inputText.indexOf("<data>")+6,inputText.indexOf("</data>"),resultString);
+        System.out.println(finalString);
 
     }
 }
