@@ -130,13 +130,13 @@ public class HomeWork_1 {
         //Используемые технологии: String.find, String.replaceAll, String.split, String.join, String.contains, String.substring
         //Регулярные выражения, класс StringBuilder
         String mask = "*";
-        String resultString = "";
-        System.out.println("Введите ваши данные");
-        //Scanner scanner = new Scanner(System.in);
-        //String inputText = scanner.nextLine();
+        StringBuilder resultString = new StringBuilder();
+        System.out.println("Введите данные");
+        Scanner scanner = new Scanner(System.in);
+        String inputText = scanner.nextLine();
         //String inputText = "<client>(Какие то данные)<data>79991113344;test@yandex.ru;Иванов Иван Иванович</data></client>";
         //String inputText = "<client>(Какие то данные)<data></data></client>";
-        String inputText = "<client>(Какие то данные)<data>Иванов Иван Иванович;79991113344</data></client>";
+        //String inputText = "<client>(Какие то данные)<data>Иванов Иван Иванович;79991113344</data></client>";
         //scanner.close();
 
         // вытаскиваем данные из тега дата
@@ -161,15 +161,16 @@ public class HomeWork_1 {
             }
             if (userData[i].matches("[А-Яа-я ]+")) { //значит фио
                 String[] fioArray = userData[i].split(" ");
-                temporaryString = new StringBuilder(fioArray[0]);
+                    temporaryString = new StringBuilder(fioArray[0]);
                     fioArray[0] = temporaryString.replace(1,fioArray[0].length()-1,mask.repeat(fioArray[0].length()-2)).toString();
+                    temporaryString = new StringBuilder(fioArray[2]);
                     fioArray[2] = temporaryString.replace(1,fioArray[2].length(), ".").toString();
-                    userData[i] = fioArray[0]+' '+fioArray[1]+' '+fioArray[2];
+                userData[i] = fioArray[0]+' '+fioArray[1]+' '+fioArray[2];
             }
-            resultString += userData[i]+";";
+            resultString.append(userData[i]).append(";");
         }
         System.out.println(inputText);
-        StringBuilder finalString = new StringBuilder().append(inputText).replace(inputText.indexOf("<data>")+6,inputText.indexOf("</data>"),resultString);
+        StringBuilder finalString = new StringBuilder().append(inputText).replace(inputText.indexOf("<data>")+6,inputText.indexOf("</data>"), resultString.toString());
         System.out.println(finalString);
 
     }
