@@ -50,7 +50,7 @@ public class HomeWork_1 {
         float height = 1.75F;
         float weight = 75.5F;
         float imt = (float) (weight / Math.pow(height,2));
-        System.out.println(String.format("%.1f", imt));
+        System.out.printf("%.1f%n", imt);
     }
 
     public static void task3() {
@@ -131,13 +131,16 @@ public class HomeWork_1 {
         //Регулярные выражения, класс StringBuilder
         String mask = "*";
         StringBuilder resultString = new StringBuilder();
+
         System.out.println("Введите данные");
+
         Scanner scanner = new Scanner(System.in);
-        String inputText = scanner.nextLine();
+            String inputText = scanner.nextLine();
+        scanner.close();
         //String inputText = "<client>(Какие то данные)<data>79991113344;test@yandex.ru;Иванов Иван Иванович</data></client>";
         //String inputText = "<client>(Какие то данные)<data></data></client>";
         //String inputText = "<client>(Какие то данные)<data>Иванов Иван Иванович;79991113344</data></client>";
-        //scanner.close();
+        //
 
         // вытаскиваем данные из тега дата
         String dataString = inputText.substring(inputText.indexOf("<data>")+6,inputText.indexOf("</data>"));
@@ -149,9 +152,7 @@ public class HomeWork_1 {
         String[] userData = dataString.split(";");
 
         for (int i = 0; i < userData.length; i++) {
-            StringBuilder temporaryString = new StringBuilder();
-            temporaryString = temporaryString.append(userData[i]);
-
+            StringBuilder temporaryString = new StringBuilder().append(userData[i]);
             if (userData[i].contains("@")) { // значит электронка
                 userData[i] = temporaryString.replace(userData[i].indexOf("@")-1,userData[i].indexOf("@"),mask).toString();
                 userData[i] = temporaryString.replace(userData[i].indexOf("@")+1,userData[i].indexOf("."),mask.repeat(userData[i].indexOf(".")-userData[i].indexOf("@")-1)).toString();
